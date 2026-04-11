@@ -4,7 +4,7 @@ module.exports = async function handler(req, res) {
   const apiKey = process.env.STEAM_API_KEY;
 
   if (!steamid) {
-    return res.status(400).json({ error: "steamid query parameter is required" });
+    return res.status(400).json({ error: "Adj meg egy Steam ID-t!" });
   }
 
   if (!apiKey) {
