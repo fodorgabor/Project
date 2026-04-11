@@ -1,14 +1,9 @@
-export const config = {
-  runtime: 'nodejs18.x'
-};
-
-//Player owned games
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   const steamid = req.query.steamid;
   const apiKey = process.env.STEAM_API_KEY;
 
   if (!steamid) {
-    return res.status(400).json({ error: "Adj meg egy Steam ID-t!" });
+    return res.status(400).json({ error: "steamid query parameter is required" });
   }
 
   if (!apiKey) {
@@ -22,8 +17,6 @@ export default async function handler(req, res) {
     const data = await response.json();
     return res.status(200).json(data);
   } catch (error) {
-    console.error('Steam API error:', error);
     return res.status(500).json({ error: "Failed to fetch data from Steam" });
   }
 }
-
