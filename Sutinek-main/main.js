@@ -1,6 +1,8 @@
 let currentPage = 0;
 const gamesPerPage = 50;
 let allGames = [];
+const submitBtn = document.querySelector('#submit');
+submitBtn.onclick = loadGames;
 
 async function loadGames() {
     const steamid = document.getElementById('search').value; // Steam ID
@@ -61,3 +63,4 @@ function displayPage(page) {
 }
 
 loadGames();
+submitBtn.onclick = loadGames;
