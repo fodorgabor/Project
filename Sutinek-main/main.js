@@ -4,9 +4,13 @@ let allGames = [];
 const submitBtn = document.querySelector('#submit');
 submitBtn.onclick = loadGames;
 
+
+
 async function loadGames() {
     const steamid = document.getElementById('search').value; // Steam ID
+    // const apiKey = document.getElementById('apikey').value; // API kulcs
     try {
+        
         const response = await fetch(`/api/steam?steamid=${steamid}`);
         const data = await response.json();
         if (!data.response || !data.response.games) {

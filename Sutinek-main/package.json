@@ -1,5 +1,10 @@
 {
   "name": "sutinek-game-library",
   "version": "1.0.0",
-  "description": "Game library website"
+  "description": "Game library website",
+  "type": "module",
+  "scripts": {
+    "dev": "node dev-server.js",
+    "start": "node dev-server.js"
+  }
 }
