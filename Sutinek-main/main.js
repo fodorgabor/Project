@@ -8,11 +8,21 @@ submitBtn.onclick = loadGames;
 
 async function loadGames() {
     const steamid = document.getElementById('search').value; // Steam ID
-    // const apiKey = document.getElementById('apikey').value; // API kulcs
     try {
-        
         const response = await fetch(`/api/steam?steamid=${steamid}`);
-        const data = await response.json();
+        const text = await response.text();
+
+        if (!response.ok) {
+            throw new Error(`Server returned ${response.status}: ${text}`);
+        }
+
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (parseError) {
+            throw new Error(`Invalid JSON from server: ${parseError.message}. Response: ${text}`);
+        }
+
         if (!data.response || !data.response.games) {
             throw new Error(data.error || 'No games found');
         }
