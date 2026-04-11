@@ -3,7 +3,7 @@ const gamesPerPage = 50;
 let allGames = [];
 
 async function loadGames() {
-    const steamid = '76561199026570558'; // Steam ID
+    const steamid = document.getElementById('search').value; // Steam ID
     try {
         const response = await fetch(`/api/steam?steamid=${steamid}`);
         const data = await response.json();
