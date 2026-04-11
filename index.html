@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Játék Könyvtár</title>
+</head>
+<body>
+
+<header>Game Library</header>
+
+<div class="library">
+</div>
+
+<script>
+async function loadGames() {
+    const steamid = '76561199026570558'; // Replace with your Steam ID
+    try {
+        const response = await fetch(`/api/steam?steamid=${steamid}`);
+        const data = await response.json();
+        const games = data.response.games;
+        const library = document.querySelector('.library');
+        library.innerHTML = '';
+        games.forEach(game => {
+            const gameDiv = document.createElement('div');
+            gameDiv.className = 'game';
+            gameDiv.innerHTML = `
+                <img src="https://steamcdn-a.akamaihd.net/steam/apps/${game.appid}/header.jpg" alt="${game.name}">
+                <div class="title">${game.name}</div>
+                <a href="https://store.steampowered.com/app/${game.appid}/" target="_blank" class="btn">Steam oldal <br> megtekintése</a>
+            `;
+            library.appendChild(gameDiv);
+        });
+    } catch (error) {
+        console.error('Error loading games:', error);
+        document.querySelector('.library').innerHTML = '<p>Hiba történt a játékok betöltésekor.</p>';
+    }
+}
+
+loadGames();
+</script>
+
+</body>
+</html>
