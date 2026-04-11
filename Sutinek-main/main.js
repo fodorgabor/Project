@@ -3,14 +3,13 @@ const gamesPerPage = 50;
 let allGames = [];
 
 async function loadGames() {
-    const steamid = '76561199026570558'; // Replace with your Steam ID
     try {
-        const response = await fetch(`/api/steam?steamid=${steamid}`);
+        const response = await fetch('/api/steam_all');
         const data = await response.json();
-        if (!data.response || !data.response.games) {
-            throw new Error(data.error || 'No games found');
+        if (!data.applist || !data.applist.apps) {
+            throw new Error(data.error || 'No apps found');
         }
-        allGames = data.response.games;
+        allGames = data.applist.apps;
         displayPage(currentPage);
     } catch (error) {
         console.error('Error loading games:', error);
