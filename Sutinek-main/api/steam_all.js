@@ -1,5 +1,5 @@
 //Teljes steam  könyvtar
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   const url = 'https://api.steampowered.com/ISteamApps/GetAppList/v2/'; 
   try {
     const response = await fetch(url);

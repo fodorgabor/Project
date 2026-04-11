@@ -1,9 +1,5 @@
 {
   "name": "sutinek-game-library",
   "version": "1.0.0",
-  "description": "Game library website",
-  "main": "index.mjs",
-  "scripts": {
-    "start": "node index.mjs"
-  }
+  "description": "Game library website"
 }
