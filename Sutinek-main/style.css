@@ -1,61 +1,142 @@
-body
-{
+body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%);background: linear-gradient(180deg,rgba(255, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 75%);
-    color: rgb(0, 0, 0);
+    background: #D3DAC1;
+    font-family: "Pixelify Sans", sans-serif;
 }
 
-        header {
-            background-color: #670000;
-            padding: 15px;
-            text-align: center;
-            font-size: 24px;
-        }
+/* HEADER */
+#title_text {
+    background-color: #3E4A48;
+    padding: 15px;
+    text-align: center;
+    font-size: 60px;
+    box-shadow: black 0px 10px 10px;
+}
 
-        .library {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-            padding: 20px;
-        }
+/* NAV */
+.nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 50px auto;
+    background-color: #3E4A48;
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    box-shadow: black 10px 10px 10px;
+}
 
-        .game {
-            background-color: rgb(201, 192, 138);
-            border-radius: 10px;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .game img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-
-        .title {
-            margin: 10px 0;
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: #c10000;
-            padding: 8px 12px;
-            border-radius: 5px;
-            text-decoration: none;
-            color: black;
-            font-weight: bold;
-        }
-
-        .btn:hover {
-            background-color: #ff0000;
-            color: white;
-        }
-
-img {
+/* INPUT + BUTTON */
+#user_input {
+    display: flex;
+    gap: 10px;
     width: 100%;
-    max-width: 120px;
-    height: 120px;
+}
+
+#user_input input {
+    flex: 1;
+    padding: 8px;
+}
+
+#user_input button {
+    padding: 8px 12px;
+    background-color: #D6C2BC;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#user_input button:hover {
+    background-color: #F7A5A7;
+    color: white;
+}
+
+/* ERROR */
+.error_message {
+    margin-top: 10px;
+}
+
+#error_message_id {
+    display: none;
+}
+
+/* GRID */
+.library {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* GAME CARD */
+.game {
+    background-color: rgb(201, 192, 138);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+/* IMAGE FIX */
+.game img {
+    width: 100%;
+    height: 150px;
     object-fit: cover;
+    border-radius: 5px;
+}
+
+/* TITLE */
+.title {
+    margin: 10px 0;
+}
+
+/* BUTTON LINK */
+.btn {
+    display: inline-block;
+    background-color: #D6C2BC;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background-color: #F7A5A7;
+    color: white;
+}
+
+/* PAGINATION */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    height: 25%;
+    background-color: #D6C2BC;
+    border-radius: 5px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    padding: 10px 20px;
+    font-size: clamp(14px, 2vw, 18px);
+    width: auto;
+}
+
+.pagination button:hover {
+    background-color: #F7A5A7;
+    color: white;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    #title_text {
+        font-size: 35px;
+    }
+    button {
+        width: 100%;
+    }
 }
