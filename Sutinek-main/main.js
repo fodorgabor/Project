@@ -1,15 +1,16 @@
 let currentPage = 0;
-const gamesPerPage = 50;
+const gamesPerPage = 100;
 let allGames = [];
 
 const submitBtn = document.querySelector('#submit');
 submitBtn.onclick = loadGames;
+-
 
 async function loadGames() {
     const steamid = document.getElementById('search').value;
 
     try {
-        const response = await fetch(`/api/steam?steamid=${steamid}`);
+        const response = await fetch(`/api/steam_all?steamid=${steamid}`);
         const data = await response.json();
 
         if (!data.response || !data.response.games) {
