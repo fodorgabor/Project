@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+
+    <title>Játék Könyvtár</title>
+</head>
+<body>
+
+<header id="title_text">Game Library</header>
+
+<div class="nav">
+    <div id="user_input">
+        <input type="text" onkeypress="if(event.key==='Enter'){loadGames();}" id="search" placeholder="Steam User ID">
+        <button id="submit">Keresés</button>
+    </div>
+
+    <p id="error_message_id" class="error_message"></p>
+</div>
+
+<div class="library"></div>
+<div class="pagination"></div>
+
+<script src="main.js"></script>
+</body>
+</html>
