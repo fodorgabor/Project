@@ -18,7 +18,7 @@
 
 <div class="nav">
     <div id="user_input">
-        <input type="text" id="search" placeholder="Steam User ID">
+        <input type="text" onkeypress="if(event.key==='Enter'){loadGames();}" id="search" placeholder="Steam User ID">
         <button id="submit">Keresés</button>
     </div>
 
