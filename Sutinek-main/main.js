@@ -2,19 +2,50 @@ let currentPage = 0;
 const gamesPerPage = 100;
 let allGames = [];
 
-const submitBtn = document.querySelector('#submit');
+const submitBtn = document.querySelector('#submit_steamID');
 submitBtn.onclick = loadGames;
--
+
+const submitGamesBtn = document.querySelector('#submit_Games');
+submitGamesBtn.onclick = searchGames;
+
+async function searchGames() {
+    const query = document.getElementById('search_Games').value.trim();
+
+    if (!query) return;
+
+    try {
+        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+
+        if (!data.results || data.results.length === 0) {
+            throw new Error('Nincs találat.');
+        }
+
+        // Az Apify eredményeket átalakítja a meglévő formátumra
+        allGames = data.results.map(item => ({
+            appid: item.appId,        // ← Apify mező neve lehet más!
+            name: item.title || item.name,
+        }));
+
+        currentPage = 0;
+        displayPage(currentPage);
+
+    } catch (error) {
+        const err = document.getElementById('error_message_id');
+        err.textContent = 'Hiba: ' + error.message;
+        err.style.display = 'block';
+    }
+}
 
 async function loadGames() {
-    const steamid = document.getElementById('search').value;
+    const steamid = document.getElementById('search_steamID').value;
 
     try {
         const response = await fetch(`/api/steam_all?steamid=${steamid}`);
         const data = await response.json();
 
         if (!data.response || !data.response.games) {
-            throw new Error(data.error || 'No games found');
+            throw new Error(data.error || 'Nem található játék a megadott Steam ID-hez.');
         }
 
         allGames = data.response.games;

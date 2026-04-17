@@ -18,8 +18,11 @@
 
 <div class="nav">
     <div id="user_input">
-        <input type="text" onkeypress="if(event.key==='Enter'){loadGames();}" id="search" placeholder="Steam User ID">
-        <button id="submit">Keresés</button>
+        <input type="text" onkeypress="if(event.key==='Enter'){loadGames();}" id="search_Games" placeholder="Jatek Keresés">
+        <button id="submit_Games">Keresés</button>
+
+        <input type="text" onkeypress="if(event.key==='Enter'){loadGames();}" id="search_steamID" placeholder="Steam User ID">
+        <button id="submit_steamID">Keresés</button>
     </div>
 
     <p id="error_message_id" class="error_message"></p>
