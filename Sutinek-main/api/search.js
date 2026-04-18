@@ -6,31 +6,23 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Steam Store Search API – publikus, nem kell API kulcs, azonnali
-    const url = `https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(query)}&l=hungarian&cc=HU&count=50`;
+    const fetches = [0, 10, 20, 30, 40].map(start =>
+      fetch(`https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(query)}&l=hungarian&cc=HU&count=10&start=${start}`)
+        .then(r => r.json())
+    );
 
-    const response = await fetch(url);
+    const pages = await Promise.all(fetches);
 
-    if (!response.ok) {
-      throw new Error(`Steam API hiba: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    if (!data.items || data.items.length === 0) {
-      return res.status(200).json({ results: [] });
-    }
-
-    // Steam storesearch formátumot átalakítjuk a meglévő formátumra
-  const results = (data.items || []).map(item => ({
-    appid: item.id,
-    name: item.name,
-    image: item.tiny_image,  // már kész kép URL jön az API-tól
-  }));
+    const results = pages.flatMap(page =>
+      (page.items || []).map(item => ({
+        appid: item.id,
+        name: item.name,
+        image: item.tiny_image,
+      }))
+    );
 
     return res.status(200).json({ results });
   } catch (error) {
-    console.error('Search error:', error);
     return res.status(500).json({ error: 'Keresési hiba: ' + error.message });
   }
 }
