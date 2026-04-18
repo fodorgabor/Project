@@ -56,6 +56,87 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // /api/steam_all endpoint
+  if (pathname === '/api/steam_all') {
+    const steamid = parsedUrl.query.steamid;
+
+    if (!steamid) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Hiányzó steamid' }));
+      return;
+    }
+
+    if (!STEAM_API_KEY) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Hiányzik a STEAM_API_KEY környezeti változó' }));
+      return;
+    }
+
+    const steamApiUrl = `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=${STEAM_API_KEY}&steamid=${steamid}&include_appinfo=true&include_played_free_games=true`;
+
+    try {
+      const response = await fetch(steamApiUrl);
+      const data = await response.json();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(data));
+    } catch (error) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Nem megfelelő adatok' }));
+    }
+    return;
+  }
+
+  // /api/search endpoint
+  if (pathname === '/api/search') {
+    const query = parsedUrl.query.q;
+    const apifyToken = process.env.APIFY_API;
+
+    if (!query) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Hiányzó keresési kifejezés' }));
+      return;
+    }
+
+    if (!apifyToken) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Hiányzik az APIFY_API környezeti változó' }));
+      return;
+    }
+
+    try {
+      const searchUrl = `https://api.apify.com/v2/acts/BPhynDzjOF46b7an2/runs?token=${apifyToken}`;
+      const input = {
+        searchQueries: [query],
+        sort: 'relevance',
+        maxResultsPerSearch: 50,
+        maxSearchPages: 15,
+        maxRequestRetries: 5
+      };
+
+      const runResponse = await fetch(searchUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input })
+      });
+      const runData = await runResponse.json();
+
+      // Wait for the run to complete
+      let datasetItems = [];
+      if (runData.id) {
+        const datasetUrl = `https://api.apify.com/v2/datasets/${runData.defaultDatasetId}/items`;
+        const datasetResponse = await fetch(datasetUrl);
+        datasetItems = await datasetResponse.json();
+      }
+
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ results: datasetItems }));
+    } catch (error) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: error.message }));
+    }
+    return;
+  }
+
   // Serve static files
   let filePath = path.join(__dirname, pathname === '/' ? 'index.html' : pathname);
 

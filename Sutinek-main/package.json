@@ -4,7 +4,7 @@
   "description": "Game library website",
   "type": "module",
   "scripts": {
-    "dev": "vercel dev"
+    "dev": "node dev-server.js"
   },
   "dependencies": {
     "apify-client": "^1.0.0"
