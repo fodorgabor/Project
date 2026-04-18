@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
   try {
     // Steam Store Search API – publikus, nem kell API kulcs, azonnali
-    const url = `https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(query)}&l=hungarian&cc=HU`;
+    const url = `https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(query)}&l=hungarian&cc=HU&count=50`;
 
     const response = await fetch(url);
 
