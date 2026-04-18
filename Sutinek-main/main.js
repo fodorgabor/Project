@@ -16,6 +16,9 @@ async function searchGames() {
     try {
         const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
         const data = await response.json();
+        const data = await response.json();
+        console.log(data.results[0]); // itt mit ír ki?
+        allGames = data.results;
 
         if (!data.results || data.results.length === 0) {
             throw new Error('Nincs találat.');
