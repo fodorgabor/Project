@@ -11,6 +11,9 @@ submitGamesBtn.onclick = searchGames;
 async function searchGames() {
     const query = document.getElementById('search_Games').value.trim();
 
+    const query = document.getElementById('search_Games').value.trim();
+    if (!query) return;
+
     if (!query) return;
 
     try {
