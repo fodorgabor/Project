@@ -10,6 +10,9 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log('APIFY_API token present:', !!token);
+    console.log('Query:', query);
+    
     // Start actor run
     const startResponse = await fetch('https://api.apify.com/v2/acts/BPhynDzjOF46b7an2/runs', {
       method: 'POST',
@@ -27,12 +30,25 @@ export default async function handler(req, res) {
       })
     });
 
+    const startText = await startResponse.text();
+    console.log('Apify response status:', startResponse.status);
+    console.log('Apify response:', startText.substring(0, 500));
+
     if (!startResponse.ok) {
-      const errorText = await startResponse.text();
-      throw new Error(`Apify start failed: ${errorText}`);
+      throw new Error(`Apify start failed (${startResponse.status}): ${startText}`);
     }
 
-    const runInfo = await startResponse.json();
+    let runInfo;
+    try {
+      runInfo = JSON.parse(startText);
+    } catch (e) {
+      throw new Error(`Invalid JSON from Apify: ${startText.substring(0, 200)}`);
+    }
+    
+    if (!runInfo.data || !runInfo.data.id) {
+      throw new Error(`No run ID in response: ${startText}`);
+    }
+    
     const runId = runInfo.data.id;
 
     // Wait for completion
@@ -55,16 +71,24 @@ export default async function handler(req, res) {
         const datasetResponse = await fetch(`https://api.apify.com/v2/datasets/${datasetId}/items`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        items = await datasetResponse.json();
+        const datasetText = await datasetResponse.text();
+        try {
+          items = JSON.parse(datasetText);
+        } catch (e) {
+          console.error('Dataset parse error:', datasetText.substring(0, 200));
+          items = [];
+        }
+      } else if (status === 'FAILED') {
+        throw new Error('Apify actor failed: ' + (statusData.data.errorMessage || 'Unknown error'));
       }
     }
 
+    console.log('Returning items count:', items.length);
     return res.status(200).json({ results: items });
   } catch (error) {
     console.error('Apify error:', error);
     return res.status(500).json({ 
-      error: 'Keresési hiba',
-      details: error.message 
+      error: 'Keresési hiba: ' + error.message
     });
   }
 }
