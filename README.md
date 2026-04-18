@@ -8,6 +8,7 @@ Funkciók
 🖼️ Játék borítóképek és Steam oldal linkek
 📄 Lapozás nagy könyvtárakhoz
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 🎮 Game Library
 A Steam game library browser – search for games by title, or load anyone's Steam library using their profile ID.
