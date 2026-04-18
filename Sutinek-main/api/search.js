@@ -22,10 +22,11 @@ export default async function handler(req, res) {
     }
 
     // Steam storesearch formátumot átalakítjuk a meglévő formátumra
-    const results = data.items.map(item => ({
-      appid: item.id,
-      name: item.name,
-    }));
+  const results = (data.items || []).map(item => ({
+    appid: item.id,
+    name: item.name,
+    image: item.tiny_image,  // már kész kép URL jön az API-tól
+  }));
 
     return res.status(200).json({ results });
   } catch (error) {

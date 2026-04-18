@@ -23,7 +23,7 @@ async function searchGames() {
 
         // Az Apify eredményeket átalakítja a meglévő formátumra
         allGames = data.results.map(item => ({
-            appid: item.id,        // ← Apify mező neve lehet más!
+            appid: item.appId,        // ← Apify mező neve lehet más!
             name: item.title || item.name,
         }));
 
