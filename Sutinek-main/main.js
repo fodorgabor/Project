@@ -75,7 +75,7 @@ function displayPage(page) {
         gameDiv.className = 'game';
 
         gameDiv.innerHTML = `
-            <img src="https://steamcdn-a.akamaihd.net/steam/apps/${game.appid}/header.jpg" alt="${game.name}">
+            <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/header.jpg" alt="${game.name}">
             <div class="title">${game.name}</div>
             <a href="https://store.steampowered.com/app/${game.appid}/" target="_blank" class="btn">
                 Steam oldal megtekintése
