@@ -10,11 +10,15 @@ export default async function handler(req, res) {
     const response = await fetch(url);
     const data = await response.json();
 
-    const results = (data.items || []).map(item => ({
-      appid: item.app_id,
+  const results = (data.items || []).map(item => {
+    const match = item.logo.match(/apps\/(\d+)\//);
+    const appid = match ? parseInt(match[1]) : null;
+    return {
+      appid,
       name: item.name,
       image: item.logo,
-    }));
+    };
+  });
 
     return res.status(200).json({ results });
   } catch (error) {
