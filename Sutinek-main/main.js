@@ -9,26 +9,18 @@ const submitGamesBtn = document.querySelector('#submit_Games');
 submitGamesBtn.onclick = searchGames;
 
 async function searchGames() {
-
     const query = document.getElementById('search_Games').value.trim();
     if (!query) return;
 
     try {
         const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
         const data = await response.json();
-        const data = await response.json();
-        console.log(data.results[0]); // itt mit ír ki?
-        allGames = data.results;
 
         if (!data.results || data.results.length === 0) {
             throw new Error('Nincs találat.');
         }
 
-        // Az Apify eredményeket átalakítja a meglévő formátumra
-        allGames = data.results.map(item => ({
-            appid: item.appId,        // ← Apify mező neve lehet más!
-            name: item.title || item.name,
-        }));
+        allGames = data.results; // appid és name már jól jön az API-ból, nem kell map()
 
         currentPage = 0;
         displayPage(currentPage);
