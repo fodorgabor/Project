@@ -6,20 +6,15 @@ export default async function handler(req, res) {
   }
 
   try {
-    const fetches = [0, 10, 20, 30, 40].map(start =>
-      fetch(`https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(query)}&l=hungarian&cc=HU&count=10&start=${start}`)
-        .then(r => r.json())
-    );
+    const url = `https://store.steampowered.com/search/results/?term=${encodeURIComponent(query)}&json=1&count=50&start=0&cc=HU`;
+    const response = await fetch(url);
+    const data = await response.json();
 
-    const pages = await Promise.all(fetches);
-
-    const results = pages.flatMap(page =>
-      (page.items || []).map(item => ({
-        appid: item.id,
-        name: item.name,
-        image: item.tiny_image,
-      }))
-    );
+    const results = (data.items || []).map(item => ({
+      appid: item.app_id,
+      name: item.name,
+      image: item.logo,
+    }));
 
     return res.status(200).json({ results });
   } catch (error) {
